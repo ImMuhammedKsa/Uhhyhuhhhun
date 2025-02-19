@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Special Access</title>
+    <style>
+        body { margin: 0; background: black; color: white; font-family: Arial, sans-serif; text-align: center; }
+        .loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; }
+        .hidden { display: none; }
+        audio { width: 100%; display: none; }
+        button { font-size: 20px; padding: 10px 20px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="loading">Loading... Please wait</div>
+    <button id="start" class="hidden">Click to Continue</button>
+    <audio id="rickroll" loop>
+        <source src="RICKROLL.M4A" type="audio/mpeg">
+    </audio>
+
+    <script>
+        setTimeout(() => {
+            document.querySelector(".loading").classList.add("hidden");
+            let audio = document.querySelector("#rickroll");
+            let button = document.querySelector("#start");
+
+            // Try autoplay
+            audio.play().then(() => {
+                audio.style.display = "block"; // Show the audio player (optional)
+            }).catch(() => {
+                // If autoplay fails, show the button
+                button.classList.remove("hidden");
+                button.onclick = () => {
+                    button.remove();
+                    audio.play();
+                };
+            });
+        }, 10000); // 10-second loading screen
+
+        // Prevent Back Button
+        history.pushState(null, null, document.URL);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+        });
+
+        // Disable Right-Click
+        document.addEventListener("contextmenu", (event) => event.preventDefault());
+
+        // Redirect if Audio is Paused
+        document.querySelector("#rickroll").addEventListener("pause", () => {
+            window.location.href = "https://your-second-rickroll-site.com"; 
+        });
+    </script>
+</body>
+</html>
